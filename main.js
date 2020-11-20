@@ -1,30 +1,62 @@
 'use strict';
 
-const firstRow = 'мама мыла раму';
-const secondRow = 'собака друг человека';
+const kickButton = document.querySelector(`#btn-kick`);
 
-function getRow(firstRow, secondRow) {
-  let quantitySymbolAInFirstRow = 0;
-  for (let i = 0; i < firstRow.length; i++) {
-    if (firstRow.charAt(i) === "а") {
-      console.log(firstRow[i]);
-      quantitySymbolAInFirstRow++;
-    }
-  }
+const character = {
+  name: "Pikachu",
+  defaultHP: 100,
+  damageHP: 100,
+  progressHealth: document.querySelector(`#health-character`),
+  progressBar: document.querySelector(`#progressbar-character`),
 
-  let quantitySymbolAInSecondRow = 0;
-  for (let i = 0; i < secondRow.length; i++) {
-    if (secondRow.charAt(i) === "а") {
-      console.log(secondRow[i]);
-      quantitySymbolAInSecondRow++;
-    }
-  }
+}
 
-  if (quantitySymbolAInFirstRow > quantitySymbolAInSecondRow) {
-    return firstRow;
+const enemy = {
+  name: "Charmander",
+  defaultHP: 100,
+  damageHP: 100,
+  progressHealth: document.querySelector(`#health-enemy`),
+  progressBar: document.querySelector(`#progressbar-enemy`),
+}
+
+function init() {
+  kickButton.addEventListener(`click`, kickButtonClickHandler);
+}
+
+
+function kickButtonClickHandler() {
+  changeHP(random(20), character);
+  changeHP(random(20), enemy);
+}
+
+function renderHPLife(person) {
+  person.progressHealth.innerText = `${person.damageHP} / ${person.defaultHP}`;
+}
+
+function renderProgressBar(person) {
+  person.progressBar.style.width = `${person.damageHP}%`;
+}
+
+function renderHP(person) {
+  renderHPLife(person);
+  renderProgressBar(person);
+}
+
+function changeHP(count, person) {
+  if (person.damageHP < count) {
+    person.defaultHP = 0;  
+    alert(`${person.name} проиграл бой!`);
+    kickButton.disabled = true;
   } else {
-    return secondRow;
+    person.damageHP -= count;
   }
-};
 
-console.log(getRow(secondRow, firstRow));
+   renderHP(person);
+}
+
+function random(num) {
+  return Math.ceil(Math.random() * num);
+}
+
+init();
+
