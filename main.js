@@ -44,7 +44,7 @@ function renderHP(person) {
 
 function changeHP(count, person) {
   if (person.damageHP < count) {
-    person.defaultHP = 0;  
+    person.damageHP = 0;  
     alert(`${person.name} проиграл бой!`);
     kickButton.disabled = true;
   } else {
@@ -58,5 +58,4 @@ function random(num) {
   return Math.ceil(Math.random() * num);
 }
 
-init();
-
+init()
