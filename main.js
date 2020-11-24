@@ -1,6 +1,10 @@
 `use strict`;
 
+const QUANTITY_MOVE = 6;
+
 const kickButton = getElement(`#btn-kick`);
+const thunderButton = getElement(`#btn-thunder`);
+const buttons = document.querySelectorAll(`.button`);
 
 const character = {
   name: "Pikachu",
@@ -8,10 +12,11 @@ const character = {
   damageHP: 100,
   progressHealth: getElement(`#health-character`),
   progressBar: getElement(`#progressbar-character`),
-  changeHP: changeHP,
-  renderHP: renderHP,
-  renderHPLife: renderHPLife,
-  renderProgressBar: renderProgressBar,
+
+  changeHP,
+  renderHP,
+  renderHPLife,
+  renderProgressBar,
 }
 
 const enemy = {
@@ -20,10 +25,10 @@ const enemy = {
   damageHP: 100,
   progressHealth: getElement(`#health-enemy`),
   progressBar: getElement(`#progressbar-enemy`),
-  changeHP: changeHP,
-  renderHP: renderHP,
-  renderHPLife: renderHPLife,
-  renderProgressBar: renderProgressBar,
+  changeHP,
+  renderHP,
+  renderHPLife,
+  renderProgressBar,
 }
 
 function getElement(css) {
@@ -35,11 +40,6 @@ function random(num) {
 }
 
 function init() {
-  kickButton.addEventListener(`click`, kickButtonClickHandler);
- 
-}
-
-function kickButtonClickHandler() {
   character.changeHP(random(20));
   enemy.changeHP(random(20));
   renderLog();
@@ -60,17 +60,21 @@ function renderHP() {
 
 function changeHP(count) {
   this.damageHP -= count;
-  
+
   const log = (this === character) ? generateLog(this, enemy, count) : generateLog(this, character, count);
   createLog(log);
 
   if (this.damageHP <= 0) {
-    this.damageHP = 0;  
+    this.damageHP = 0;
     alert(`${this.name} проиграл бой!`);
-    kickButton.disabled = true;
+
+    NodeList.prototype.forEach = Array.prototype.forEach;
+    buttons.forEach(button => {
+      button.disabled = `true`;
+    })
   }
 
-   this.renderHP();
+  this.renderHP();
 }
 
 function generateLog(firstPerson, secondPerson, count) {
@@ -107,4 +111,22 @@ function renderLog() {
   logBlock.style.display = `flex`;
 }
 
-init()
+function makeMove(button) {
+  let countClick = 0;
+  let initialText = button.innerText;
+
+  button.addEventListener(`click`, () => {
+    countClick++;
+    init(button);
+
+    button.innerText = `${initialText} [${QUANTITY_MOVE - countClick}]`;
+
+    console.log(countClick);
+    if (countClick === QUANTITY_MOVE) {
+      button.disabled = `true`;
+    }
+  });
+}
+
+makeMove(kickButton);
+makeMove(thunderButton);

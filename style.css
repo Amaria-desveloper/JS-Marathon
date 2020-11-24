@@ -273,6 +273,7 @@ body {
     border-radius: 10px;
     min-height: 30px;
     vertical-align: middle;
+    margin-right: 30px;
     padding: 12px 20px;
     outline: none !important;
     cursor: pointer;
