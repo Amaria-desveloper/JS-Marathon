@@ -12,6 +12,7 @@ const character = {
   damageHP: 100,
   progressHealth: getElement(`#health-character`),
   progressBar: getElement(`#progressbar-character`),
+
   changeHP,
   renderHP,
   renderHPLife,
@@ -43,7 +44,6 @@ function init() {
   enemy.changeHP(random(20));
   renderLog();
 }
-
 
 function renderHPLife() {
   this.progressHealth.innerText = `${this.damageHP} / ${this.defaultHP}`;
@@ -120,7 +120,6 @@ function makeMove(button) {
     init(button);
 
     button.innerText = `${initialText} [${QUANTITY_MOVE - countClick}]`;
-
 
     console.log(countClick);
     if (countClick === QUANTITY_MOVE) {
