@@ -12,10 +12,10 @@ const character = {
   damageHP: 100,
   progressHealth: getElement(`#health-character`),
   progressBar: getElement(`#progressbar-character`),
-  changeHP: changeHP,
-  renderHP: renderHP,
-  renderHPLife: renderHPLife,
-  renderProgressBar: renderProgressBar,
+  changeHP,
+  renderHP,
+  renderHPLife,
+  renderProgressBar,
 }
 
 const enemy = {
@@ -24,10 +24,10 @@ const enemy = {
   damageHP: 100,
   progressHealth: getElement(`#health-enemy`),
   progressBar: getElement(`#progressbar-enemy`),
-  changeHP: changeHP,
-  renderHP: renderHP,
-  renderHPLife: renderHPLife,
-  renderProgressBar: renderProgressBar,
+  changeHP,
+  renderHP,
+  renderHPLife,
+  renderProgressBar,
 }
 
 function getElement(css) {
