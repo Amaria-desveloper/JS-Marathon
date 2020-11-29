@@ -12,8 +12,8 @@ function random(min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 }
 
-function randomElement(num) {
-  return Math.ceil(Math.random() * num);
+function randomElement(arr) {
+  return arr[Math.ceil(Math.random() * arr.length) - 1];
 }
 
 export { getElement, getElements, random, randomElement }
