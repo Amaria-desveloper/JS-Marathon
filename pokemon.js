@@ -1,16 +1,22 @@
-import { getElement, getElements } from './util.js'
+'use strict';
 
-const buttons = getElements(`.button`);
+import { getElement, getElements } from './util.js'
+import { endGame } from './game.js'
+
 
 class Selectors {
   constructor(name) {
+    this.controls = getElement(`.control__${name}`);
     this.progressHealth = getElement(`#health-${name}`);
     this.progressbar = getElement(`#progressbar-${name}`);
+    this.frame = getElement(`.${name}`).querySelector(`img`);
+    this.title = getElement(`.${name}`).querySelector(`.name`);
   }
 }
 
+
 class Pokemon extends Selectors {
-  constructor({name, hp, type, selectors}) {
+  constructor( {name, hp, type, selectors, attacks = []} ) {
     super(selectors);
 
     this.name = name;
@@ -19,9 +25,10 @@ class Pokemon extends Selectors {
       total: hp,
     };
     this.type = type;
+    this.attacks = attacks;
+       
     this.renderHP();
   }
-
 
   changeHP = (count, cb) => {
     const { hp: current } = this;
@@ -29,11 +36,9 @@ class Pokemon extends Selectors {
 
     if (this.hp.current <= 0) {
       this.hp.current = 0;
-      alert(`${this.name} проиграл бой!`);
 
-      for (let button of buttons) {
-        button.disabled = `true`;
-      }
+      let loser = this.name;
+      endGame(loser);
     }
 
     this.renderHP();
@@ -47,6 +52,13 @@ class Pokemon extends Selectors {
 
   renderProgressBar = () => {
     const { hp: {current, total}, progressbar } = this;
+
+    if (current > 20 && current <= 60) {
+      progressbar.classList.toggle(`low`);
+    } else if ( current > 0 && current <= 20) {
+      progressbar.classList.toggle(`critical`);
+    } 
+
     progressbar.style.width = `${current / (total / 100)}%`;
   }
 
@@ -56,4 +68,12 @@ class Pokemon extends Selectors {
   }
 }
 
-export default Pokemon
+
+class Enemy extends Pokemon {
+  constructor({ name, hp, type, selectors, attacks, img }) {
+    super({ name, hp, type, selectors, attacks });
+    this.img = img;
+  } 
+}
+
+export { Pokemon, Enemy }
