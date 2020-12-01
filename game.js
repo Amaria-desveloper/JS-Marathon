@@ -42,8 +42,7 @@ class Game {
   }
 
   setEnemyKick = (player1, player2) => {
-
-    if (getElement(`.control__player2 button`).disabled) {
+    if (getElement(`.control__player2 button`)) {
       getElement(`.control__player2 button`).disabled = false;
     }
 
@@ -53,11 +52,13 @@ class Game {
     });
 
     setTimeout(function () {
-      getElement(`.control__player2 button`).disabled = true;
+      if (getElement(`.control__player2 button`)){
+        getElement(`.control__player2 button`).disabled = true;
+      }
     }, 200);
   } 
 
-  start = async () => {
+  start = async() => {
     const pokemons = await this.getPokemons();
     const pikachu = pokemons.find(item => item.name === 'Pikachu');
 
@@ -72,6 +73,22 @@ class Game {
     });
 
     this.characterSetings(player1, player2, this.enemySettings(player2));
+  }
+
+  changeEnemy = () => {
+    this.changeLevel(`player1`);
+    
+    // player2 = new Enemy({
+    //   ...randomElement(pokemons),
+    //   selectors: `player2`,
+    // });
+  }
+
+  changeLevel = (player) => {
+    let playerLevel = getElement(`.${player}`).querySelector(`.lvl-count`);
+    let currentCount = Number(playerLevel.textContent);
+    currentCount++;
+    playerLevel.textContent = currentCount;
   }
 
   restartClickHandler = () => {

@@ -18,9 +18,9 @@ function createGameoverScreen(loser) {
   const button = document.createElement(`button`);
   button.classList.add(`button`);
   button.style = `display: block; margin: 0 auto; width: 300px`;
-  button.innerText = `Restart`;
+  button.innerText = `Продолжить битву`;
 
-  gameoverScreen.appendChild(img);
+  //gameoverScreen.appendChild(img);
   gameoverScreen.appendChild(p);
   gameoverScreen.appendChild(button);
 
