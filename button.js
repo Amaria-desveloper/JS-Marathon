@@ -1,3 +1,5 @@
+`use strict`;
+
 function buttonCount(button, playerMoves, count = 0) {
   const initialText = button.innerText;
   button.innerText = `${initialText} [${playerMoves - count}]`;

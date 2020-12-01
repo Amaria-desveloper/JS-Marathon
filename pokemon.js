@@ -1,7 +1,7 @@
 'use strict';
 
-import { getElement, getElements } from './util.js'
-import { endGame } from './game.js'
+import { getElement } from './util.js'
+import { game } from './main.js'
 
 
 class Selectors {
@@ -38,7 +38,7 @@ class Pokemon extends Selectors {
       this.hp.current = 0;
 
       let loser = this.name;
-      endGame(loser);
+      game.end(loser);
     }
 
     this.renderHP();
