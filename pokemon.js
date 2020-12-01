@@ -1,8 +1,7 @@
 'use strict';
 
-import { getElement, getElements } from './util.js'
-import { endGame } from './game.js'
-
+import { getElement, getElements, randomElement } from './util.js'
+import game  from './main.js'
 
 class Selectors {
   constructor(name) {
@@ -31,14 +30,19 @@ class Pokemon extends Selectors {
   }
 
   changeHP = (count, cb) => {
+
     const { hp: current } = this;
     this.hp.current -= count;
 
     if (this.hp.current <= 0) {
       this.hp.current = 0;
 
+      if (this !== `player1`) {
+        game.changeEnemy();
+      } 
+      
       let loser = this.name;
-      endGame(loser);
+      game.end(loser);
     }
 
     this.renderHP();
