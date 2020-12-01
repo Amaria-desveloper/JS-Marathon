@@ -1,8 +1,9 @@
 'use strict';
 
-import startGame from './main.js'
+import { game } from './main.js'
 import { getElements, getElement, random } from './util.js'
 import { generateLog, createLog, renderLog } from './logging.js'
+import { createButton, buttonCount } from './button.js'
 
 
 function createGameoverScreen(loser) {
@@ -43,7 +44,7 @@ function restartClickHandler() {
   getElements(`.health`).forEach(item => item.classList.remove(`low`));
   getElements(`.health`).forEach(item => item.classList.remove(`critical`));
 
-  startGame();
+  game.start();
 }
 
 
@@ -53,10 +54,7 @@ function endGame(loser) {
 }
 
 
-function characterSetings(player1, player2, player2Damages) {
-  let kickBackMin = player2Damages.minDamage;
-  let kickBackMax = player2Damages.maxDamage;
-
+function characterSetings(player1, player2) {
   player1.attacks.forEach(item => {
     let button = createButton(item, player1);
     const btnCountJolt = buttonCount(button.button, button.maxCount);
@@ -69,10 +67,7 @@ function characterSetings(player1, player2, player2Damages) {
         renderLog();
       });
 
-      player1.changeHP(random(kickBackMin, kickBackMax), (count) => {
-        (createLog(generateLog(player2, player1, count)));
-        renderLog();
-      });
+      setEnemyKick(player1, player2);
     });
   });
 }
@@ -84,42 +79,23 @@ function enemySettings(player2) {
   player2.attacks.forEach(item => {
     createButton(item, player2).button.disabled = `true`;
   });
-
-  let minDamage = player2.attacks[0].minDamage;
-  let maxDamage = player2.attacks[0].maxDamage;
-
-  return { minDamage, maxDamage }
 }
 
+function setEnemyKick(player1, player2) {
 
-function buttonCount(button, playerMoves, count = 0) {
-  const initialText = button.innerText;
-  button.innerText = `${initialText} [${playerMoves - count}]`;
-
-  return function () {
-    count++;
-    button.innerText = `${initialText} [${playerMoves - count}]`;
-
-    if (count === playerMoves) {
-      button.disabled = `true`;
-    }
-
-    return count;
+  if (getElement(`.control__player2 button`).disabled) {
+    getElement(`.control__player2 button`).disabled = false;
   }
-}
 
+  player1.changeHP(random(player2.attacks[0].minDamage, player2.attacks[0].maxDamage), (count) => {
+      (createLog(generateLog(player2, player1, count)));
+      renderLog();
+  });
 
-const createButton = (item, player) => {
-  const button = document.createElement(`button`);
-  button.classList.add(`button`);
-  button.innerText = item.name;
-
-  let maxCount = item.maxCount;
-
-  let controls = player.controls;
-  controls.appendChild(button);
-
-  return { button, maxCount };
+  setTimeout( function () {
+    getElement(`.control__player2 button`).disabled = true;
+  }, 200);
+  
 }
   
 export { endGame, characterSetings, enemySettings }
