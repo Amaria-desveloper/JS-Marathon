@@ -1,7 +1,7 @@
 'use strict';
 
-import { getElement, getElements, randomElement } from './util.js'
-import game  from './main.js'
+import { getElement } from './util.js'
+import game from './main.js'
 
 class Selectors {
   constructor(name) {
